@@ -1,0 +1,124 @@
+Mini Expression Interpreter
+Enter an arithmetic expression or type quit
+42
+Expression: 42
+Tokens: 42 
+Postfix: 42
+Result: 42
+3 + 4
+Expression: 3 + 4
+Tokens: 3  +  4 
+Postfix: 3  4  +
+Result: 7
+3 + 4 * 2
+Expression: 3 + 4 * 2
+Tokens: 3  +  4  *  2
+Postfix: 3  4  2  *  +
+Result: 11
+(3+4) * 2
+Expression: (3+4) * 2
+Tokens: (  3  +  4  )  *  2
+Postfix: 3  4  +  2  *
+Result: 14
+18/3/2
+Expression: 18/3/2
+Tokens: 18  /  3  /  2
+Postfix: 18  3  /  2  /
+Result: 3
+20-5-3
+Expression: 20-5-3
+Tokens: 20  -  5  -  3
+Postfix: 20  5  -  3  -
+Result: 12
+100/(2*5)
+Expression: 100/(2*5)
+Tokens: 100  /  (  2  *  5  )
+Postfix: 100  2  5  *  /
+Result: 10
+(8+2)*(7-3)
+Expression: (8+2)*(7-3)
+Tokens: (  8  +  2  )  *  (  7  -  3  )
+Postfix: 8  2  +  7  3  -  *
+Result: 40
+12+34*2-6/3
+Expression: 12+34*2-6/3
+Tokens: 12  +  34  *  2  -  6  /  3
+Postfix: 12  34  2  *  +  6  3  /  -
+Result: 78
+
+Mini Expression Interpreter
+Enter an arithmetic expression or type quit
+
+Expression:
+libc++abi: terminating due to uncaught exception of type std::runtime_error: Syntax error: expression has no result
+zsh: abort      ./PA3
+
+Mini Expression Interpreter
+Enter an arithmetic expression or type quit
+3 +
+Expression: 3 +
+libc++abi: terminating due to uncaught exception of type std::runtime_error: Syntax error: operator is missing an operand
+zsh: abort      ./PA3
+
+Mini Expression Interpreter
+Enter an arithmetic expression or type quit
++ 3
+Expression: + 3
+libc++abi: terminating due to uncaught exception of type std::runtime_error: Syntax error: operator is missing an operand
+zsh: abort      ./PA3
+
+Mini Expression Interpreter
+Enter an arithmetic expression or type quit
+3 + * 4
+Expression: 3 + * 4
+libc++abi: terminating due to uncaught exception of type std::runtime_error: Syntax error: operator is missing an operand
+zsh: abort      ./PA3
+
+Mini Expression Interpreter
+Enter an arithmetic expression or type quit
+3 4
+Expression: 3 4
+libc++abi: terminating due to uncaught exception of type std::runtime_error: Syntax error: missing operator
+zsh: abort      ./PA3
+
+Mini Expression Interpreter
+Enter an arithmetic expression or type quit
+()
+Expression: ()
+libc++abi: terminating due to uncaught exception of type std::runtime_error: Syntax error: expression has no result
+zsh: abort      ./PA3
+
+Mini Expression Interpreter
+Enter an arithmetic expression or type quit
+(3 + 4
+Expression: (3 + 4
+libc++abi: terminating due to uncaught exception of type std::runtime_error: Mismatched parentheses: missing ')'
+zsh: abort      ./PA3
+
+Mini Expression Interpreter
+Enter an arithmetic expression or type quit
+3 + 4)
+Expression: 3 + 4)
+libc++abi: terminating due to uncaught exception of type std::runtime_error: Mismatched parentheses: missing '('
+zsh: abort      ./PA3
+
+Mini Expression Interpreter
+Enter an arithmetic expression or type quit
+10/0
+Expression: 10/0
+libc++abi: terminating due to uncaught exception of type std::domain_error: Division by zero
+zsh: abort      ./PA3
+
+Mini Expression Interpreter
+Enter an arithmetic expression or type quit
+abc
+Expression: abc
+libc++abi: terminating due to uncaught exception of type std::runtime_error: Tokenizer error at position 0: unexpected character 'a'
+zsh: abort      ./PA3
+
+Mini Expression Interpreter
+Enter an arithmetic expression or type quit
+4 + @
+Expression: 4 + @
+libc++abi: terminating due to uncaught exception of type std::runtime_error: Tokenizer error at position 4: unexpected character '@'
+zsh: abort      ./PA3
