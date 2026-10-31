@@ -5,44 +5,49 @@
 
 LinkedQueue<Token> tokenize(const std::string& expression) {
     LinkedQueue<Token> tokens;
-    int value = 0; //will hold the value of the integers
-    for (int i = 0; i < expression.length(); i++) {
-        if (expression[i] == ' ') {
+    int i = 0; // index for expression input
+
+    while (i < expression.length()) {
+        char c = expression[i];
+        if (isspace(c)) {
             //will skip through if it is a whitespace
-        } else {
-            while (i < expression.length() && isNumber(expression[i] == true)) {
-                value = value * 10 + (expression[i] - '0'); 
+            i++;
+            continue;
+        } else if (isdigit(c)) {
+            int val = 0;
+            while (i < expression.length() && isdigit(expression[i])) {
+                val = val * 10 + (expression[i] - '0');
                 i++;
             }
-            Token token; //might be incorrect
-            tokens.enqueue(token.numberToken(value));
-                
-
-            switch (expression[i]) {
-                case '+': 
-                    tokens.enqueue(token.operatorToken(TokenType::PLUS));
-                    break;
-                case '-': 
-                    tokens.enqueue(token.operatorToken(TokenType::MINUS));
-                    break;
-                case '*': 
-                    tokens.enqueue(token.operatorToken(TokenType::MULTIPLY));
-                    break;
-                case '/': 
-                    tokens.enqueue(token.operatorToken(TokenType::DIVIDE));
-                    break;
-                case '(': 
-                    tokens.enqueue(token.operatorToken(TokenType::LEFT_PAREN));
-                    break;
-                case ')': 
-                    tokens.enqueue(token.operatorToken(TokenType::RIGHT_PAREN));
-                    break;
-
-                default: 
-                    std::cout << "Tokenizer error at position" << i << ": unexpected character " << expression[i] << std::endl;
-            }
+            tokens.enqueue(Token(TokenType::INTEGER, val));
+            continue;
         }
+        
+        switch (expression[i]) {
+            case '+': 
+                tokens.enqueue(Token(TokenType::PLUS));
+                break;
+            case '-': 
+                tokens.enqueue(Token(TokenType::MINUS));
+                break;
+            case '*': 
+                tokens.enqueue(Token(TokenType::MULTIPLY));
+                break;
+            case '/': 
+                tokens.enqueue(Token(TokenType::DIVIDE));
+                break;
+            case '(': 
+                tokens.enqueue(Token(TokenType::LEFT_PAREN));
+                break;
+            case ')': 
+                tokens.enqueue(Token(TokenType::RIGHT_PAREN));
+                break;
 
+            default: 
+                throw std::runtime_error("Tokenizer error at position " + std::to_string(i)
+                                         + ": unexpected character '" + expression[i] + "'");
+        }
+        i++;
     }
     return tokens;
 }
@@ -62,37 +67,30 @@ LinkedQueue<Token> toPostfix(LinkedQueue<Token> infix) {
         } else if (token.type == TokenType::LEFT_PAREN) {
             operators.push(token);
         } else if (token.type == TokenType::RIGHT_PAREN) {
-            bool isLeftFound = false;
-            while (operators.isEmpty() == false) {
-                Token top = operators.findTop();
+            while (operators.isEmpty() == false && operators.findTop().type != TokenType::LEFT_PAREN) {
+                postFixOutput.enqueue(operators.findTop());
                 operators.pop();
-                if (top.type == TokenType::LEFT_PAREN) {
-                    isLeftFound = true;
-                }
-
-                postFixOutput.enqueue(top); //idk if you should enqueue it
             }
-
-            if (isLeftFound == false) {
-                std::cout << "Mismatched-parenthesis error" << std::endl;
+            if (operators.isEmpty())
+            {
+                throw std::runtime_error("Mismatched parentheses: missing '('");
             }
+            operators.pop(); //pop the left parenthesis
         } else if (isOperator(token) == true) {
-            Token top = operators.findTop();
-            while (operators.isEmpty() == false && isOperator(token) == true && precedence(operators.findTop()) >= precedence(token)) {
+            while (operators.isEmpty() == false && isOperator(operators.findTop()) == true && precedence(operators.findTop()) >= precedence(token)) {
+                postFixOutput.enqueue(operators.findTop());
                 operators.pop();
-                postFixOutput.enqueue(token);
             }
             operators.push(token);
-        } else {
-            while (operators.isEmpty() == false) {
-                Token top = operators.findTop();
-                operators.pop();
-                postFixOutput.enqueue(top);
-                if (top.type == TokenType::LEFT_PAREN || top.type == TokenType::RIGHT_PAREN) {
-                    std::cout << "Mismatched-parenthesis error" << std::endl;
-                }
-            }
         }
+        infix.dequeue();
+    }
+    while (operators.isEmpty() == false) {
+        if (operators.findTop().type == TokenType::LEFT_PAREN || operators.findTop().type == TokenType::RIGHT_PAREN) {
+            throw std::runtime_error("Mismatched parentheses: missing ')'");
+        }
+        postFixOutput.enqueue(operators.findTop());
+        operators.pop();
     }
     return postFixOutput;
 }
@@ -102,6 +100,7 @@ int evaluatePostfix(LinkedQueue<Token> postfix) {
     LinkedStack<int> storedOperands;
     while (postfix.isEmpty() == false) {
         Token token = postfix.findFront(); 
+        postfix.dequeue(); //dequeue the token after storing it in the variable
         if (token.type == TokenType::INTEGER) {
             storedOperands.push(token.value); //will push the integer value of the token onto the operand stack
         } else if (isOperator(token) == true) {
@@ -115,7 +114,7 @@ int evaluatePostfix(LinkedQueue<Token> postfix) {
                 storedOperands.pop(); //pops the right
                 int leftOperand = storedOperands.findTop();
                 storedOperands.pop(); //pops the left
-                int result;
+                int result = 0;
                 switch (token.type) {
                     case TokenType::PLUS:
                         result = leftOperand + rightOperand;
@@ -130,7 +129,7 @@ int evaluatePostfix(LinkedQueue<Token> postfix) {
                         //if division is 0 then there is an error
                         //right operand will determine if there is an error
                         if (rightOperand == 0) {
-                            std::cout << "Division by zero error" << std::endl;
+                            throw std::domain_error("Division by zero");
                         } else {
                             result = leftOperand / rightOperand;
                         }
@@ -140,15 +139,15 @@ int evaluatePostfix(LinkedQueue<Token> postfix) {
                 }
                 storedOperands.push(result); //pushes the result
             } else {
-                std::cout << "The stack does not contain at least two values error" << std::endl;
+                throw std::runtime_error("Syntax error: operator is missing an operand");
             }
-        } else {
-            
         }
     }
-    if (storedOperands.isEmpty() || storedOperands.size() > 1) {
-        std::cout << "Expression is malformed error" << std::endl;
-        return -1; //idk if this is correct or not
+    if (storedOperands.isEmpty()) {
+        throw std::runtime_error("Syntax error: expression has no result");
+    }
+    if (storedOperands.size() > 1) {
+        throw std::runtime_error("Syntax error: missing operator");
     }
     return storedOperands.findTop();
 }

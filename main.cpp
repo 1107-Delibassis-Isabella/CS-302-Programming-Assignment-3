@@ -8,7 +8,7 @@ int main() {
     string userInput;
     getline(cin, userInput);
     while (userInput != "quit") {
-        cout << "Expression: " << userInput;
+        cout << "Expression: " << userInput << endl;
 
         LinkedQueue<Token> tokens = tokenize(userInput);
 

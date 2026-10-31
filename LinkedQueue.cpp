@@ -88,7 +88,9 @@ void LinkedQueue<T>::clear() {
 template <typename T>
 T LinkedQueue<T>::findFront() {
     if (isEmpty() == true) {
-        return NULL;
+        return T{};
     }
     return frontPtr->data;
 }
+
+template class LinkedQueue<Token>;

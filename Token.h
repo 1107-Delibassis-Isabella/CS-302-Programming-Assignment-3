@@ -18,7 +18,7 @@ struct Token {
     TokenType type;
     int value;
 
-    Token();
+    Token() : type(TokenType::INTEGER), value(0) {}
     Token(TokenType t, int v = 0) : type(t), value(v) {} //idk if this is correct
 
     Token numberToken(int v) {

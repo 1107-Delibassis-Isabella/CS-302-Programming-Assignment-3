@@ -95,7 +95,10 @@ void LinkedStack<T>::clear() { //idk if this is correct
 template <typename T>
 T LinkedStack<T>::findTop() {
     if (isEmpty() == true) {
-        return nullptr;
+        return T{};
     }
     return topPtr->data;
 }
+
+template class LinkedStack<Token>;
+template class LinkedStack<int>;
