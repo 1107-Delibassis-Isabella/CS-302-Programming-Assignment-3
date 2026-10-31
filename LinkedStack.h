@@ -2,6 +2,7 @@
 #define LINKEDSTACK_H
 #include "stdio.h"
 #include "Node.h"
+//using namespace std;
 
 template <typename T>
 class LinkedStack {

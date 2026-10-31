@@ -15,7 +15,7 @@ LinkedStack<T>::LinkedStack(const LinkedStack<T>& other) {
         otherCurr = otherCurr->next;
 
         while (otherCurr != NULL) {
-            newCurr->next = new Node<T>(other->data);
+            newCurr->next = new Node<T>(otherCurr->data);
             newCurr = newCurr->next;
             otherCurr = otherCurr->next;
         }
@@ -32,7 +32,7 @@ LinkedStack<T>& LinkedStack<T>::operator=(const LinkedStack<T>& other) {
         otherCurr = otherCurr->next;
 
         while (otherCurr != NULL) {
-            newCurr->next = new Node<T>(other->data);
+            newCurr->next = new Node<T>(otherCurr->data);
             newCurr = newCurr->next;
             otherCurr = otherCurr->next;
         }
@@ -52,19 +52,19 @@ void LinkedStack<T>::push(const T& value) {
         cout << "Stack Underflow" << endl;
         return;
     }*/
-    Node* temp = new Node(value);
-    temp->next = topPtr; //idk if this is correct
-    topPtr = temp;
+    topPtr = new Node<T>(value, topPtr);
+    //temp->next = topPtr; //idk if this is correct
+    //topPtr = temp;
     count++;
 }
 
 template <typename T>
 void LinkedStack<T>::pop() {
     if (topPtr == NULL) {
-        cout << "Stack Underflow" << endl;
+        //std::cout << "Stack Underflow" << std::endl;
         return;
     }
-    Node* temp = topPtr;
+    Node<T>* temp = topPtr;
     topPtr = topPtr->next;
     //int val = temp->count; //idk if this is correct
     count--;
@@ -86,10 +86,8 @@ void LinkedStack<T>::clear() { //idk if this is correct
     if (topPtr == NULL) {
         return;
     }
-    while (topPtr != NULL) {
-        Node<T>* temp = topPtr;
-        topPtr = topPtr.next->;
-        delete temp;
+    while (!isEmpty()) {
+        pop();
     }
     count = 0;
 }

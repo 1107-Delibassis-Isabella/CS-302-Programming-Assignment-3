@@ -44,6 +44,7 @@ LinkedQueue<Token> tokenize(const std::string& expression) {
         }
 
     }
+    return tokens;
 }
 
 //template might be incorrect
@@ -93,7 +94,7 @@ LinkedQueue<Token> toPostfix(LinkedQueue<Token> infix) {
             }
         }
     }
-    
+    return postFixOutput;
 }
 
 int evaluatePostfix(LinkedQueue<Token> postfix) {
@@ -134,19 +135,22 @@ int evaluatePostfix(LinkedQueue<Token> postfix) {
                             result = leftOperand / rightOperand;
                         }
                         break;
+
+                    default: break;
                 }
                 storedOperands.push(result); //pushes the result
             } else {
                 std::cout << "The stack does not contain at least two values error" << std::endl;
             }
         } else {
-            if (storedOperands.isEmpty() || storedOperands.size() > 1) {
-                std::cout << "Expression is malformed error" << std::endl;
-                return -1; //idk if this is correct or not
-            }
-            return storedOperands.findTop();
+            
         }
     }
+    if (storedOperands.isEmpty() || storedOperands.size() > 1) {
+        std::cout << "Expression is malformed error" << std::endl;
+        return -1; //idk if this is correct or not
+    }
+    return storedOperands.findTop();
 }
 
 
