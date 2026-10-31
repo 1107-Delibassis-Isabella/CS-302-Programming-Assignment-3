@@ -1,17 +1,8 @@
-PA3: main.o LinkedQueue.o LinkedStack.o Tokenizer.o
-	g++ main.o Tokenizer.o -o PA3
+PA3: main.o 
+	g++ -o PA3 main.o
 
-main.o: main.cpp Tokenizer.h
+main.o: main.cpp LinkedStack.h LinkedQueue.h Node.h Token.h Tokenizer.h
 	g++ -c main.cpp
-
-Tokenizer.o: Token.h Tokenizer.h Tokenizer.cpp
-	g++ -c Tokenizer.cpp
-
-LinkedQueue.o: Node.h LinkedQueue.h LinkedQueue.cpp
-	g++ -c LinkedQueue.cpp
-
-LinkedStack.o: Node.h LinkedStack.h LinkedStack.cpp
-	g++ -c LinkedStack.cpp
 
 clean: 
 	rm *.o PA3
