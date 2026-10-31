@@ -1,8 +1,9 @@
 #ifndef LINKEDSTACK_H
 #define LINKEDSTACK_H
 #include "stdio.h"
+#include "Token.h"
 #include "Node.h"
-//using namespace std;
+using namespace std;
 
 template <typename T>
 class LinkedStack {

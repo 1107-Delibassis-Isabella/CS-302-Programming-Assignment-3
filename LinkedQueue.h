@@ -1,6 +1,7 @@
 #ifndef LINKEDQUEUE_H
 #define LINKEDQUEUE_H
 #include "stdio.h"
+#include "Token.h"
 #include "Node.h"
 
 template <typename T>

@@ -8,7 +8,7 @@ LinkedQueue<T>::LinkedQueue() {
 }
 
 template <typename T>
-LinkedQueue<T>::LinkedQueue(const LinkedQueue<T>& other) {
+LinkedQueue<T>::LinkedQueue(const LinkedQueue<T>& other) : frontPtr(NULL), backPtr(NULL), count(0) {
     Node<T>* curr = other.frontPtr;
     while (curr!= NULL) {
         enqueue(curr->data);
@@ -21,7 +21,7 @@ LinkedQueue<T>& LinkedQueue<T>::operator= (const LinkedQueue<T>& other) {
     if (this != &other) {
         clear();
         Node<T>* curr = other.frontPtr;
-        while(curr!= NULL) {
+        while(curr!= NULL) { 
             enqueue(curr->data);
             curr = curr->next;
         }
@@ -36,7 +36,7 @@ LinkedQueue<T>::~LinkedQueue() {
 
 template <typename T>
 void LinkedQueue<T>::enqueue(const T& value) {
-    Node<T> newNode = new Node<T>(value);
+    Node<T>* newNode = new Node<T>(value);
     if (backPtr == NULL) {
         frontPtr = newNode;
     } else {
@@ -88,7 +88,7 @@ void LinkedQueue<T>::clear() {
 template <typename T>
 T LinkedQueue<T>::findFront() {
     if (isEmpty() == true) {
-        return nullptr;
+        return NULL;
     }
     return frontPtr->data;
 }
